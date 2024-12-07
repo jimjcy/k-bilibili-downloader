@@ -3,4 +3,6 @@ venv/
 build/
 dist/
 test.py
+test.txt
+test.json
 chromedriver.exe
