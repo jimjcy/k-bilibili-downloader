@@ -62,67 +62,6 @@ consoleLogHandler.setFormatter(fmter)
 rootLogger.info(f"base dir: {dataBasePath}")
 
 
-def _downloadDriver(url: str, browser: Literal["edge", "chrome"]) -> pathlib.Path:
-    rootLogger.info(f"downloading webdriver, url: {url}")
-    response = requests.get(
-        url=url,
-        stream=True,
-        timeout=60,
-    )
-    rootLogger.info(f"response status code: {response.status_code}")
-    zipPath = tempRoot.joinpath("driver.zip")
-    saveIO = io.FileIO(zipPath, "w")
-    for i in response.iter_content(1024):
-        saveIO.write(i)
-    rootLogger.info("download successfully, unextracting")
-    zip = zipfile.ZipFile(zipPath)
-    zip.extractall(tempRoot)
-    rootLogger.info("unextract successfully")
-    if browser == "edge":
-        return tempRoot.joinpath("msedgedriver.exe")
-    else:
-        return tempRoot.joinpath("chromedriver.exe")
-
-
-browserType: Literal["edge", "chrome"] = "edge"
-driver: pathlib.Path
-
-rootLogger.info("getting browser info")
-EdgeVersion = subprocess.check_output(
-    [
-        "powershell",
-        "-command",
-        "&{(Get-Item 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe').VersionInfo.ProductVersion}",
-    ]
-).decode("utf-8")[:-2]
-
-if EdgeVersion == "":
-    rootLogger.warning("Edge isn't installed, getting Chrome version")
-    ChromeVersion = subprocess.check_output(
-        [
-            "powershell",
-            "-command",
-            "&{(Get-Item 'C:\Program Files\Google\Chrome\Application\chrome.exe').VersionInfo.ProductVersion}",
-        ]
-    ).decode("utf-8")[:-2]
-    if ChromeVersion == "":
-        rootLogger.warning("Chrome isn't installed either, using classic mode")
-        # Todo: classic mode
-    else:
-        browserType = "chrome"
-        rootLogger.info(f"Chrome version: {ChromeVersion}")
-        driver = _downloadDriver(
-            f"https://storage.googleapis.com/chrome-for-testing-public/{ChromeVersion}/win64/chromedriver-win64.zip",
-            "chrome"
-        )
-else:
-    rootLogger.info(f"Successfully, Edge version: {EdgeVersion}")
-    driver = _downloadDriver(
-        f"https://msedgedriver.azureedge.net/{EdgeVersion}/edgedriver_win64.zip",
-        browserType
-    )
-
-
 root = tk.Tk()
 
 

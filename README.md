@@ -1,10 +1,10 @@
 # k-bilibili-downloader
 
-一个基于python的tkinter简易b站下载工具（真的很简易
+一个基于 python 的 tkinter 简易 b 站下载工具（真的很简易
 
 ## 起因
 
-某朋友不知道在网上抄了一段什么代码，让我帮他重写UI
+某朋友不知道在网上抄了一段什么代码，让我帮他重写 UI
 
 然后我看着那一坨像屎粑粑一样的代码陷入了沉思。。。
 
@@ -26,21 +26,24 @@ pip install -r requirements.txt
 
 #### ffmpeg
 
-保证此程序运行时能够通过`ffmpeg`指令直接调启ffmpeg
+程序默认使用`ffmpeg`指令掉起ffmpeg，可以在启动参数中使用`-d`参数修改。后续考虑支持自动下载ffmpeg
 
 可以尝试使用此命令
 
 ```bash
 ffmpeg -version
 ```
-若能正常输出版本号，既表示ffmpeg可用
 
-ffmpeg下载链接：https://ffmpeg.org/download.html
+若能正常输出版本号，既表示 ffmpeg 可用
+
+你可以使用`-f`参数指定 ffmpeg 路径
+
+ffmpeg 下载链接：[Download FFMPEG](https://ffmpeg.org/download.html)
 
 ## 操作
 
-1. 填入目标BV号/AV号或者直接填b站链接
-2. 把你的b站cookie填进去
+1. 填入目标 BV/AV/SS/EP/MD号，或者直接填 b 站链接
+2. 把你的 b 站 cookie 填进去
 3. 点击下载，会尝试获取该视频的资料
 4. 选择音频流/视频流开始下载
 

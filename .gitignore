@@ -6,3 +6,4 @@ test.py
 test.txt
 test.json
 chromedriver.exe
+__pycache__
