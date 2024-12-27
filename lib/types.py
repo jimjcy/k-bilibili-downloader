@@ -14,3 +14,9 @@ PlayInfo = Dict
 class VideoPart:
     title: str
     playinfo: Callable[[], PlayInfo]
+
+@dataclass
+class BrowserConfig:
+    system: Literal["Windows", "Darwin", "Linux"]
+    name: Literal["edge", "chrome", "firefox", "none"]
+    version: str

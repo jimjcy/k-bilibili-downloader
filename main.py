@@ -19,6 +19,7 @@ if __name__ == "__main__":
 import lib.getPlayInfo as getPlayInfo
 import lib.util as util
 import lib.types as types
+import lib.driver as driver
 
 
 rootLogger = util.getLogger("root")
@@ -63,6 +64,29 @@ def _download(
         saveIO.close()
         logger.info("download succeed")
         succeed()
+
+def _downloadDriver():
+    rootLogger.info(f"downloading webdriver, url: {url}")
+    try:
+        response = requests.get(
+            url=url,
+            stream=True,
+            timeout=60
+        )
+        rootLogger.info(f"response status code: {response.status_code}")
+        for i in response.iter_content(1024):
+            saveIO.write(i)
+        rootLogger.info("download successfully, unextracting")
+        zip = zipfile.ZipFile(zipPath)
+        zip.extractall(tempRoot)
+        rootLogger.info("unextract successfully")
+        if browser == "edge":
+            return tempRoot.joinpath("msedgedriver.exe")
+        else:
+            return tempRoot.joinpath("chromedriver.exe")
+    except :
+        rootLogger.info("download webdriver faild")
+        return None
 
 
 def startDownload(
